@@ -1,0 +1,75 @@
+"""
+==================================================
+ACTIVIDAD 3: Implementando Cifrado César
+Python y Ciberseguridad
+==================================================
+"""
+
+def cifrar_letra(letra, desplazamiento):
+    """
+    Cifra una sola letra mayúscula usando el Cifrado César.
+    - letra: un carácter (A-Z)
+    - desplazamiento: número entero de posiciones a desplazar
+    """
+    # Verificamos si es una letra mayúscula
+    if 'A' <= letra <= 'Z':
+        # Convertimos la letra a su código ASCII
+        codigo_actual = ord(letra)
+        # Aplicamos el desplazamiento y aseguramos que permanezca en el rango del alfabeto (A-Z: 65-90)
+        # Restamos 65 para trabajar con base 0 (A=0, Z=25), sumamos el desplazamiento y aplicamos módulo 26
+        codigo_cifrado = ((codigo_actual - 65 + desplazamiento) % 26) + 65
+        return chr(codigo_cifrado)
+    
+    # Si no es una letra mayúscula, se devuelve tal cual (aunque en este ejercicio se filtrará antes)
+    return letra
+
+
+def cifrar_mensaje(mensaje, desplazamiento):
+    """
+    Cifra un mensaje completo utilizando la función cifrar_letra.
+    - Cifra SOLO las letras (A-Z), ignorando espacios, números y puntuación.
+    - Convierte automáticamente el mensaje a mayúsculas.
+    """
+    mensaje_mayus = mensaje.upper()
+    mensaje_cifrado = ""
+    
+    for caracter in mensaje_mayus:
+        if caracter.isalpha():
+            # Si es una letra, la ciframos
+            mensaje_cifrado += cifrar_letra(caracter, desplazamiento)
+        else:
+            # Si es espacio, número o signo de puntuación, lo dejamos intacto
+            mensaje_cifrado += caracter
+            
+    return mensaje_cifrado
+
+
+# ==========================================
+# PROGRAMA PRINCIPAL INTERACTIVO 
+# ==========================================
+if __name__ == "__main__":
+    print("=== PROGRAMA DE CIFRADO CÉSAR ===")
+    
+    # 1. Pide al usuario un mensaje a cifrar
+    mensaje_usuario = input("Introduce el mensaje a cifrar: ")
+    
+    # 2. Pide el desplazamiento con validación (entre 1 y 25)
+    desplazamiento_usuario = 0
+    while desplazamiento_usuario < 1 or desplazamiento_usuario > 25:
+        try:
+            desplazamiento_usuario = int(input("Introduce el desplazamiento (número entre 1 y 25): "))
+            if desplazamiento_usuario < 1 or desplazamiento_usuario > 25:
+                print("Error: El desplazamiento debe estar estrictamente entre 1 y 25.")
+        except ValueError:
+            print("Error: Por favor, introduce un número entero válido.")
+            
+    # 3. Muestra el mensaje cifrado
+    mensaje_resultado_cifrado = cifrar_mensaje(mensaje_usuario, desplazamiento_usuario)
+    print(f"\nMensaje original: {mensaje_usuario}")
+    print(f"Mensaje cifrado:  {mensaje_resultado_cifrado}")
+    
+    # 4. Descifra el mensaje y muestra el resultado original para verificar
+    # Para descifrar un Cifrado César, basta con aplicar el desplazamiento inverso (26 - desplazamiento)
+    desplazamiento_inverso = 26 - desplazamiento_usuario
+    mensaje_descifrado = cifrar_mensaje(mensaje_resultado_cifrado, desplazamiento_inverso)
+    print(f"Mensaje descifrado (verificación): {mensaje_descifrado}")
