@@ -1,0 +1,29 @@
+"""
+Estadísticas de un futbolista
+
+Calcula estadísticas básicas de un jugador de fútbol, su promedio de goles y su pago final según desempeño
+Variables:
+- BONO (float): bono sobre los goles.
+- MULTA (int): multa fija.
+- nombre (str): nombre del jugador.
+- partidos (int): cantidad de partidos jugados
+- goles (int): cantidad de goles anotados
+- altura (float): altura del jugador en metros.
+- prom_goles (float): promedio de goles por partido.
+- activo (bool): indica si el jugador está activo según partidos y promedio de goles.
+- pago_final (float): cálculo del pago final del jugador, incluyendo bonos y multas.
+"""
+
+BONO = 0.2
+MULTA = 50
+
+nombre = input("Nombre del jugador: ")
+partidos = int(input("Partidos jugados: "))
+goles = int(input("Goles anotados: "))
+altura = float(input("Altura (m): "))
+
+prom_goles = goles / partidos
+activo = partidos > 10 and prom_goles >= 0.5
+pago_final = 1000 + 100 * goles * (1 + BONO) - MULTA
+
+print(nombre, f"{prom_goles:.2f}", activo, f"{pago_final:.2f} €")
